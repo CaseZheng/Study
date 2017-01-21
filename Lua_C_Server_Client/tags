@@ -1,0 +1,107 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BUFSIZE	C_Server.cpp	/^            BUFSIZE = 4*1024,$/;"	e	enum:Link::__anon1	file:
+ClearFdWriteFlag	C_Server.cpp	/^        bool ClearFdWriteFlag(int fd)$/;"	f	class:EventListen	access:public	signature:(int fd)
+EventListen	C_Server.cpp	/^class EventListen$/;"	c	file:
+EventListen::ClearFdWriteFlag	C_Server.cpp	/^        bool ClearFdWriteFlag(int fd)$/;"	f	class:EventListen	access:public	signature:(int fd)
+EventListen::GetFdIndex	C_Server.cpp	/^        int GetFdIndex(int fd)$/;"	f	class:EventListen	file:	access:private	signature:(int fd)
+EventListen::MAXFDNUM	C_Server.cpp	/^            MAXFDNUM = 5000,$/;"	e	enum:EventListen::__anon2	file:
+EventListen::MAXTIME	C_Server.cpp	/^            MAXTIME = 3000,$/;"	e	enum:EventListen::__anon2	file:
+EventListen::Run	C_Server.cpp	/^        static void Run();$/;"	p	class:EventListen	file:	access:public	signature:()
+EventListen::Run	C_Server.cpp	/^void EventListen::Run()$/;"	f	class:EventListen	signature:()
+EventListen::SetFdReadFlag	C_Server.cpp	/^        bool SetFdReadFlag(int fd)$/;"	f	class:EventListen	access:public	signature:(int fd)
+EventListen::SetFdWriteFlag	C_Server.cpp	/^        bool SetFdWriteFlag(int fd)$/;"	f	class:EventListen	access:public	signature:(int fd)
+EventListen::m_gFds	C_Server.cpp	/^        static struct pollfd m_gFds[MAXFDNUM];$/;"	m	class:EventListen	typeref:struct:EventListen::pollfd	file:	access:private
+EventListen::m_gFds	C_Server.cpp	/^struct pollfd EventListen::m_gFds[MAXFDNUM] = {0};$/;"	m	class:EventListen	typeref:struct:EventListen::	file:
+GetAllSocketLinkMap	C_Server.cpp	/^        static map<int, Link*> &GetAllSocketLinkMap()$/;"	f	class:MainServer	file:	access:private	signature:()
+GetCanSendDataSize	C_Server.cpp	/^        int GetCanSendDataSize() { return BUFSIZE-GetSendDataSize(); }$/;"	f	class:Link	access:public	signature:()
+GetFdIndex	C_Server.cpp	/^        int GetFdIndex(int fd)$/;"	f	class:EventListen	file:	access:private	signature:(int fd)
+GetListenfd	C_Server.cpp	/^        static int GetListenfd()$/;"	f	class:MainServer	access:public	signature:()
+GetSendDataSize	C_Server.cpp	/^        int GetSendDataSize() { return m_iSendDataSize; }$/;"	f	class:Link	access:public	signature:()
+GetSocketId	C_Server.cpp	/^        int GetSocketId() { return m_iSocketId; }$/;"	f	class:Link	access:public	signature:()
+Link	C_Server.cpp	/^        Link(const Link &link);$/;"	p	class:Link	file:	access:private	signature:(const Link &link)
+Link	C_Server.cpp	/^        Link(int socketid):$/;"	f	class:Link	access:public	signature:(int socketid)
+Link	C_Server.cpp	/^class Link$/;"	c	file:
+Link::BUFSIZE	C_Server.cpp	/^            BUFSIZE = 4*1024,$/;"	e	enum:Link::__anon1	file:
+Link::GetCanSendDataSize	C_Server.cpp	/^        int GetCanSendDataSize() { return BUFSIZE-GetSendDataSize(); }$/;"	f	class:Link	access:public	signature:()
+Link::GetSendDataSize	C_Server.cpp	/^        int GetSendDataSize() { return m_iSendDataSize; }$/;"	f	class:Link	access:public	signature:()
+Link::GetSocketId	C_Server.cpp	/^        int GetSocketId() { return m_iSocketId; }$/;"	f	class:Link	access:public	signature:()
+Link::Link	C_Server.cpp	/^        Link(const Link &link);$/;"	p	class:Link	file:	access:private	signature:(const Link &link)
+Link::Link	C_Server.cpp	/^        Link(int socketid):$/;"	f	class:Link	access:public	signature:(int socketid)
+Link::RealSend	C_Server.cpp	/^        int RealSend();$/;"	p	class:Link	file:	access:public	signature:()
+Link::RealSend	C_Server.cpp	/^int Link::RealSend()$/;"	f	class:Link	signature:()
+Link::Send	C_Server.cpp	/^        int Send(void *buf, int size);$/;"	p	class:Link	file:	access:public	signature:(void *buf, int size)
+Link::Send	C_Server.cpp	/^int Link::Send(void *buf, int size)$/;"	f	class:Link	signature:(void *buf, int size)
+Link::SetWriteFlag	C_Server.cpp	/^        bool SetWriteFlag();$/;"	p	class:Link	file:	access:private	signature:()
+Link::SetWriteFlag	C_Server.cpp	/^bool Link::SetWriteFlag()$/;"	f	class:Link	signature:()
+Link::m_cReceiveBuf	C_Server.cpp	/^        char m_cReceiveBuf[BUFSIZE];$/;"	m	class:Link	file:	access:private
+Link::m_cSendBuf	C_Server.cpp	/^        char m_cSendBuf[BUFSIZE];$/;"	m	class:Link	file:	access:private
+Link::m_iReceiveDataSize	C_Server.cpp	/^        int m_iReceiveDataSize;$/;"	m	class:Link	file:	access:private
+Link::m_iSendDataSize	C_Server.cpp	/^        int m_iSendDataSize;$/;"	m	class:Link	file:	access:private
+Link::m_iSocketId	C_Server.cpp	/^        int m_iSocketId;$/;"	m	class:Link	file:	access:private
+Link::operator =	C_Server.cpp	/^        Link &operator=(const Link &link);$/;"	p	class:Link	file:	access:private	signature:(const Link &link)
+Link::~Link	C_Server.cpp	/^        ~Link()$/;"	f	class:Link	access:public	signature:()
+MAXFDNUM	C_Server.cpp	/^            MAXFDNUM = 5000,$/;"	e	enum:EventListen::__anon2	file:
+MAXTIME	C_Server.cpp	/^            MAXTIME = 3000,$/;"	e	enum:EventListen::__anon2	file:
+MainServer	C_Server.cpp	/^        MainServer();$/;"	p	class:MainServer	file:	access:private	signature:()
+MainServer	C_Server.cpp	/^        MainServer(const MainServer &);$/;"	p	class:MainServer	file:	access:private	signature:(const MainServer &)
+MainServer	C_Server.cpp	/^class MainServer$/;"	c	file:
+MainServer::GetAllSocketLinkMap	C_Server.cpp	/^        static map<int, Link*> &GetAllSocketLinkMap()$/;"	f	class:MainServer	file:	access:private	signature:()
+MainServer::GetListenfd	C_Server.cpp	/^        static int GetListenfd()$/;"	f	class:MainServer	access:public	signature:()
+MainServer::MainServer	C_Server.cpp	/^        MainServer();$/;"	p	class:MainServer	file:	access:private	signature:()
+MainServer::MainServer	C_Server.cpp	/^        MainServer(const MainServer &);$/;"	p	class:MainServer	file:	access:private	signature:(const MainServer &)
+MainServer::Run	C_Server.cpp	/^        static void Run();$/;"	p	class:MainServer	file:	access:public	signature:()
+MainServer::Run	C_Server.cpp	/^void MainServer::Run()$/;"	f	class:MainServer	signature:()
+MainServer::SetLinkReadFlag	C_Server.cpp	/^        static bool SetLinkReadFlag(int socket)$/;"	f	class:MainServer	access:public	signature:(int socket)
+MainServer::SetLinkWriteFlag	C_Server.cpp	/^        static bool SetLinkWriteFlag(int socket)$/;"	f	class:MainServer	access:public	signature:(int socket)
+MainServer::SetListenFd	C_Server.cpp	/^        static void SetListenFd(int listenfd)$/;"	f	class:MainServer	access:public	signature:(int listenfd)
+MainServer::SetSocketLinkMap	C_Server.cpp	/^        static bool SetSocketLinkMap(int socket, Link *link) $/;"	f	class:MainServer	access:public	signature:(int socket, Link *link)
+MainServer::m_gAllSocketLinkMap	C_Server.cpp	/^        static map<int, Link*> m_gAllSocketLinkMap;$/;"	m	class:MainServer	file:	access:private
+MainServer::m_gAllSocketLinkMap	C_Server.cpp	/^map<int, Link*> MainServer::m_gAllSocketLinkMap = map<int, Link*>();$/;"	m	class:MainServer	file:
+MainServer::m_gEventListen	C_Server.cpp	/^        static EventListen m_gEventListen;$/;"	m	class:MainServer	file:	access:private
+MainServer::m_gEventListen	C_Server.cpp	/^EventListen MainServer::m_gEventListen = EventListen();$/;"	m	class:MainServer	file:
+MainServer::m_gListenFd	C_Server.cpp	/^        static int m_gListenFd;$/;"	m	class:MainServer	file:	access:private
+MainServer::m_gListenFd	C_Server.cpp	/^int MainServer::m_gListenFd = 0;$/;"	m	class:MainServer	file:
+MainServer::operator =	C_Server.cpp	/^        MainServer &operator=(const MainServer &);$/;"	p	class:MainServer	file:	access:private	signature:(const MainServer &)
+MainServer::~MainServer	C_Server.cpp	/^        ~MainServer();$/;"	p	class:MainServer	file:	access:private	signature:()
+RealSend	C_Server.cpp	/^        int RealSend();$/;"	p	class:Link	file:	access:public	signature:()
+RealSend	C_Server.cpp	/^int Link::RealSend()$/;"	f	class:Link	signature:()
+Run	C_Server.cpp	/^        static void Run();$/;"	p	class:EventListen	file:	access:public	signature:()
+Run	C_Server.cpp	/^        static void Run();$/;"	p	class:MainServer	file:	access:public	signature:()
+Run	C_Server.cpp	/^void EventListen::Run()$/;"	f	class:EventListen	signature:()
+Run	C_Server.cpp	/^void MainServer::Run()$/;"	f	class:MainServer	signature:()
+Send	C_Server.cpp	/^        int Send(void *buf, int size);$/;"	p	class:Link	file:	access:public	signature:(void *buf, int size)
+Send	C_Server.cpp	/^int Link::Send(void *buf, int size)$/;"	f	class:Link	signature:(void *buf, int size)
+SetFdReadFlag	C_Server.cpp	/^        bool SetFdReadFlag(int fd)$/;"	f	class:EventListen	access:public	signature:(int fd)
+SetFdWriteFlag	C_Server.cpp	/^        bool SetFdWriteFlag(int fd)$/;"	f	class:EventListen	access:public	signature:(int fd)
+SetLinkReadFlag	C_Server.cpp	/^        static bool SetLinkReadFlag(int socket)$/;"	f	class:MainServer	access:public	signature:(int socket)
+SetLinkWriteFlag	C_Server.cpp	/^        static bool SetLinkWriteFlag(int socket)$/;"	f	class:MainServer	access:public	signature:(int socket)
+SetListenFd	C_Server.cpp	/^        static void SetListenFd(int listenfd)$/;"	f	class:MainServer	access:public	signature:(int listenfd)
+SetSocketLinkMap	C_Server.cpp	/^        static bool SetSocketLinkMap(int socket, Link *link) $/;"	f	class:MainServer	access:public	signature:(int socket, Link *link)
+SetWriteFlag	C_Server.cpp	/^        bool SetWriteFlag();$/;"	p	class:Link	file:	access:private	signature:()
+SetWriteFlag	C_Server.cpp	/^bool Link::SetWriteFlag()$/;"	f	class:Link	signature:()
+__C_PUBLIC_H__	C_Public.h	8;"	d
+error_msg	C_Public.h	/^void error_msg(const char * s)$/;"	f	signature:(const char * s)
+m_cReceiveBuf	C_Server.cpp	/^        char m_cReceiveBuf[BUFSIZE];$/;"	m	class:Link	file:	access:private
+m_cSendBuf	C_Server.cpp	/^        char m_cSendBuf[BUFSIZE];$/;"	m	class:Link	file:	access:private
+m_gAllSocketLinkMap	C_Server.cpp	/^        static map<int, Link*> m_gAllSocketLinkMap;$/;"	m	class:MainServer	file:	access:private
+m_gAllSocketLinkMap	C_Server.cpp	/^map<int, Link*> MainServer::m_gAllSocketLinkMap = map<int, Link*>();$/;"	m	class:MainServer	file:
+m_gEventListen	C_Server.cpp	/^        static EventListen m_gEventListen;$/;"	m	class:MainServer	file:	access:private
+m_gEventListen	C_Server.cpp	/^EventListen MainServer::m_gEventListen = EventListen();$/;"	m	class:MainServer	file:
+m_gFds	C_Server.cpp	/^        static struct pollfd m_gFds[MAXFDNUM];$/;"	m	class:EventListen	typeref:struct:EventListen::pollfd	file:	access:private
+m_gFds	C_Server.cpp	/^struct pollfd EventListen::m_gFds[MAXFDNUM] = {0};$/;"	m	class:EventListen	typeref:struct:EventListen::	file:
+m_gListenFd	C_Server.cpp	/^        static int m_gListenFd;$/;"	m	class:MainServer	file:	access:private
+m_gListenFd	C_Server.cpp	/^int MainServer::m_gListenFd = 0;$/;"	m	class:MainServer	file:
+m_iReceiveDataSize	C_Server.cpp	/^        int m_iReceiveDataSize;$/;"	m	class:Link	file:	access:private
+m_iSendDataSize	C_Server.cpp	/^        int m_iSendDataSize;$/;"	m	class:Link	file:	access:private
+m_iSocketId	C_Server.cpp	/^        int m_iSocketId;$/;"	m	class:Link	file:	access:private
+main	C_Client.cpp	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+main	C_Server.cpp	/^int main (int argc, char* argv[])$/;"	f	signature:(int argc, char* argv[])
+operator =	C_Server.cpp	/^        Link &operator=(const Link &link);$/;"	p	class:Link	file:	access:private	signature:(const Link &link)
+operator =	C_Server.cpp	/^        MainServer &operator=(const MainServer &);$/;"	p	class:MainServer	file:	access:private	signature:(const MainServer &)
+~Link	C_Server.cpp	/^        ~Link()$/;"	f	class:Link	access:public	signature:()
+~MainServer	C_Server.cpp	/^        ~MainServer();$/;"	p	class:MainServer	file:	access:private	signature:()
