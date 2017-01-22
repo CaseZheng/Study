@@ -23,8 +23,9 @@ class Link
             //
         }
         int GetSocketId() { return m_iSocketId; }
-        int Send(void *buf, int size);
+        int Send(const void *buf, int size);
         int RealSend();
+        int RealReceive();
         int GetSendDataSize() { return m_iSendDataSize; }
         int GetCanSendDataSize() { return BUFSIZE-GetSendDataSize(); }
     private:
@@ -32,6 +33,7 @@ class Link
         Link &operator=(const Link &link);
 
         bool SetWriteFlag();
+        bool SetReadFlag();
         enum
         {
             BUFSIZE = 4*1024,
@@ -54,18 +56,19 @@ class EventListen
                 return false;
             }
             m_gFds[index].fd = fd;
-            m_gFds[index].events |= POLLIN|POLLERR;
+            m_gFds[index].events |= POLLOUT|POLLERR;
             return true;
         }
         bool SetFdReadFlag(int fd)
         {
             int index = GetFdIndex(fd);
+            cout<<"set fd:"<<fd<<"read flag index:"<<index<<endl;
             if(index<0 || index>=MAXFDNUM)
             {
                 return false;
             }
             m_gFds[index].fd = fd;
-            m_gFds[index].events |= POLLOUT|POLLERR;
+            m_gFds[index].events |= POLLIN|POLLERR;
             return true;
         }
         bool ClearFdWriteFlag(int fd)
@@ -79,13 +82,53 @@ class EventListen
             m_gFds[index].events &= (~POLLOUT);
             return true;
         }
-        static void Run(map<int, int> &Event);
-
+        bool DeleteFd(int fd)
+        {
+            int index = GetFdIndex(fd);
+            if(index<0 || index>=MAXFDNUM)
+            {
+                return false;
+            }
+            m_gFds[index].fd = 0;
+            m_gFds[index].events = 0;
+            m_gFds[index].revents = 0;
+            return true;
+        }
+        int Run();
+        int GetNextEvent()
+        {
+            int oldcur = m_gEventCur;
+            cout<<"EventCur"<<m_gEventCur<<endl;
+            for(int i=m_gEventCur+1; i<MAXFDNUM; ++i)
+            {
+                if(m_gFds[i].revents != 0)
+                {
+                    cout<<"i:"<<i<<" event fd"<<m_gFds[i].fd<<endl;
+                    return m_gFds[i].fd;
+                }
+                sleep(1);
+                m_gEventCur = i==MAXFDNUM-1 ? 0 : i;
+                cout<<"EventCur"<<m_gEventCur<<endl;
+                if(i == oldcur)
+                {
+                    return -1;
+                }
+            }
+            return 0;
+        }
+        int GetFdEvent(int fd)
+        {
+            if(fd>=0 && fd<MAXFDNUM)
+            {
+                return m_gFds[fd].revents;
+            }
+            return 0;
+        }
     private:
         enum
         {
-            MAXFDNUM = 5000,
-            MAXTIME = 3000,
+            MAXFDNUM = 50,
+            MAXTIME = 5000,
         };
         int GetFdIndex(int fd)
         {
@@ -108,9 +151,11 @@ class EventListen
             }
             return index;
         }
+        static int m_gEventCur;
         static struct pollfd m_gFds[MAXFDNUM];
 };
 struct pollfd EventListen::m_gFds[MAXFDNUM] = {0};
+int EventListen::m_gEventCur = 0;
 
 class MainServer
 {
@@ -122,6 +167,24 @@ class MainServer
         static bool SetLinkReadFlag(int socket)
         {
             return m_gEventListen.SetFdReadFlag(socket);
+        }
+        static bool ResetLink(int socket)
+        {
+            GetEventListen().DeleteFd(socket);
+            return true;
+        }
+        static bool DestroyLink(int socket)
+        {
+            ResetLink(socket);
+            close(socket);
+            map<int, Link*>::iterator it = GetAllSocketLinkMap().find(socket);
+            Link *link = (it->second);
+            delete link;
+            if(it != GetAllSocketLinkMap().end())
+            {
+                GetAllSocketLinkMap().erase(it);
+            }
+            return true;
         }
         static bool SetSocketLinkMap(int socket, Link *link) 
         {
@@ -136,7 +199,16 @@ class MainServer
         {
             return m_gListenFd;
         }
+        static EventListen &GetEventListen()
+        {
+            return m_gEventListen;
+        }
         static void Run();
+        static Link *GetLinkBySocketfd(int socketfd)
+        {
+            return m_gAllSocketLinkMap[socketfd];
+        }
+        static void CreateNewLink();
     private:
         MainServer();
         ~MainServer();
@@ -162,8 +234,11 @@ bool Link::SetWriteFlag()
 {
     return MainServer::SetLinkWriteFlag(m_iSocketId);
 }
-
-int Link::Send(void *buf, int size)
+bool Link::SetReadFlag()
+{
+    return MainServer::SetLinkReadFlag(m_iSocketId);
+}
+int Link::Send(const void *buf, int size)
 {
     if(NULL==buf || size<=0)
     {
@@ -197,32 +272,123 @@ int Link::RealSend()
     {
         SetWriteFlag();
     }
+    else
+    {
+        MainServer::GetEventListen().ClearFdWriteFlag(GetSocketId());
+    }
     return n;
 }
 
-void EventListen::Run(map<int, int> &Event)
+int Link::RealReceive()
 {
-    if(poll(m_gFds, MAXFDNUM, MAXTIME) <= 0)
+    int n = recv(GetSocketId(), m_cReceiveBuf+m_iReceiveDataSize, BUFSIZE-m_iReceiveDataSize, 0);
+    if(n<0)
     {
-
+        return n;
     }
+    if(n+m_iReceiveDataSize == BUFSIZE)
+    {
+        error_msg("receive buf full");
+    }
+    m_iReceiveDataSize += n;
+    cout<<"recv data size:"<<n<<endl;
+    sleep(1);
+
+    error_msg(m_cReceiveBuf);
+    Send("hello",6);
+    return n;
+}
+
+int EventListen::Run()
+{
+    int n = 0;
+    error_msg("start poll");
+    if((n = poll(m_gFds, MAXFDNUM, MAXTIME)) <= 0)
+    {
+        //
+    }
+    cout<<"n:"<<n<<endl;
+    return n;
+}
+
+void MainServer::CreateNewLink()
+{
+    int client_socket;
+    struct sockaddr_in client_addr;
+    int clnt_addr_size = sizeof(client_addr);
+    client_socket = accept(GetListenfd(), (struct sockaddr*)&client_addr, &clnt_addr_size);
+    if(-1 == client_socket)
+    {
+        error_msg("accept error");
+        return;
+    }
+
+    Link *link = new Link(client_socket);
+    GetAllSocketLinkMap()[link->GetSocketId()] = link;
+    GetEventListen().SetFdReadFlag(link->GetSocketId());
 }
 
 void MainServer::Run()
 {
     SetLinkReadFlag(GetListenfd());
-    map<int, int> Event;
-    EventListen::Run(Event);   
+    error_msg("start run");
+    for(;;)
+    {
+        int n = m_gEventListen.Run();   
+        for(int i=0; i<n; ++i)
+        {
+            int socketfd = GetEventListen().GetNextEvent();
+            int revents = GetEventListen().GetFdEvent(socketfd);
+            if(-1 == revents)
+            {
+            }
+            if(revents & POLLIN)
+            {
+                if(socketfd == GetListenfd())
+                {
+                    error_msg("new link");
+                    CreateNewLink();
+                }
+                else
+                {
+                    Link *link = GetLinkBySocketfd(socketfd);
+                    error_msg("read data");
+                    sleep(1);
+                    cout<<link<<endl;
+                    if(NULL != link)
+                    {
+                       int n = link->RealReceive();
+                       if(n<0)
+                       {
+                           MainServer::DestroyLink(link->GetSocketId());
+                       }
+                    } 
+                }
+            }
+            if(revents & POLLOUT)
+            {
+                Link *link = GetLinkBySocketfd(socketfd);
+                error_msg("send data");
+                sleep(1);
+                if(NULL != link)
+                {
+                   link->RealSend();
+                }
+            }
+            if(revents & POLLERR)
+            {
+                error_msg("error data");
+                sleep(1);
+            }
+        }
+    }
 }
 
 int main (int argc, char* argv[])
 {
     int server_socket;
-    int client_socket;
 
     struct sockaddr_in server_addr;
-    struct sockaddr_in client_addr;
-    socklen_t clnt_addr_size;
 
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if(-1 == server_socket)
@@ -252,16 +418,6 @@ int main (int argc, char* argv[])
 
     MainServer::Run();
 
-    clnt_addr_size = sizeof(client_addr);
-    client_socket = accept(server_socket, (struct sockaddr*)&client_addr, &clnt_addr_size);
-    if(-1 == client_socket)
-    {
-        error_msg("accept error");
-    }
-
-    const char* msg = "hello lua";
-    write(client_socket, msg, strlen(msg)+1);
-    close(client_socket);
     close(server_socket);
     return 0;
 }

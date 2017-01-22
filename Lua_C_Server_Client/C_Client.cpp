@@ -30,6 +30,10 @@ int main(int argc, char **argv)
     }
     error_msg("connect success");
 
+
+    const char* msg = "hello lua";
+    write(sock, msg, strlen(msg)+1);
+
     char massage[1024] = {0};
     str_len = read(sock, massage, sizeof(massage)-1);
     if(-1==str_len)

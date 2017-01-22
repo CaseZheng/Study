@@ -5,6 +5,7 @@ local port = port or 10000
 
 cli = assert(socket.connect(host, port))
 
+cli:send("fefefefe")
 local s, status, partial = cli:receive()
 print(s)
 print(partial)
