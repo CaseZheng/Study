@@ -12,7 +12,4 @@
 using namespace std;
 using namespace boost;
 
-
-int TestTimer();
-
 #endif

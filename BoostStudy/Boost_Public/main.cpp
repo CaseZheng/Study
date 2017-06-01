@@ -1,10 +1,3 @@
-﻿/*******************************************
-*author:CaseZheng
-*mail:764307915@qq.com
-*date:2016/12/30
-*desc:boost库 timer学习代码
-********************************************/
-
 #include "public.h"
 
 int TestTimer()
@@ -15,5 +8,10 @@ int TestTimer()
 	cout << "now timespac:" << t.elapsed() << "s" << endl;
 
 
+	return 0;
+}
+
+int main()
+{
 	return 0;
 }
