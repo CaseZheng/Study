@@ -6,8 +6,14 @@
 #include <cstdlib>
 #include <iostream>
 #include <cstdio>
+#include <cassert>
 
 #include "boost/timer.hpp"
+
+#include <boost/utility.hpp>
+
+#include <boost/typeof/typeof.hpp>
+#include <boost/optional.hpp>
 
 using namespace std;
 using namespace boost;
