@@ -16,6 +16,8 @@
 #include <boost/optional.hpp>
 #include <boost/assign.hpp>
 #include <boost/swap.hpp>
+#include <boost/container/detail/singleton.hpp>
+#include <boost/serialization/singleton.hpp>
 
 using namespace std;
 using namespace boost;

@@ -210,8 +210,70 @@ void TestSwap()
     return ;
 }
 
+using boost::container::container_detail::singleton_default;
+class TestSingletonDefault
+{
+public:
+    TestSingletonDefault()
+    {
+        cout<<"ctor"<<endl;
+    }
+    ~TestSingletonDefault()
+    {
+        cout<<"dtor"<<endl;
+    }
+    void print() const
+    {
+        cout<<"singleton"<<endl;
+    }
+};
+
+//singleton
+void TestSingleton()
+{
+    typedef singleton_default<TestSingletonDefault> origin;
+    origin::instance().print();
+    return ;
+}
+
+using boost::serialization::singleton;
+//singleton1
+void TestSingleton1()
+{
+    typedef singleton<TestSingletonDefault> origin;
+    origin::get_const_instance().print();
+    return ;
+}
+
+class TestSingletonClass: public singleton<TestSingletonClass>
+{
+public:
+    TestSingletonClass()
+    {
+        cout<<"ctor c"<<endl;
+    }
+    ~TestSingletonClass()
+    {
+        cout<<"dtor c"<<endl;
+    }
+    void print() const
+    {
+        cout<<"singleton"<<endl;
+    }
+};
+
+//singleton2
+void TestSingleton2()
+{
+    TestSingletonClass::get_const_instance().print();
+    //TestSingletonClass::get_mutable_instance().print();
+
+    return ;
+}
+
 int main()
 {
+    cout<<"main start"<<endl;
     //timer
     //TestTimer();
 
@@ -230,5 +292,14 @@ int main()
     //swap
     //TestSwap();
 
+    //singleton
+    //TestSingleton();
+
+    //singleton
+    //TestSingleton1();
+
+    //singleton
+    TestSingleton2();
+    cout<<"main finish"<<endl;
 	return 0;
 }
