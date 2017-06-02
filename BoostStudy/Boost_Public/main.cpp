@@ -88,6 +88,89 @@ void TestOptional()
     return ;
 }
 
+template<typename T>
+void print(T x)
+{
+    cout<<x<<endl;   
+}
+
+template<>
+void print(pair<int, string> x)
+{
+    cout<<x.first<<" "<<x.second<<endl;
+}
+
+//assign
+void TestAssign()
+{
+    using namespace boost::assign;
+    //向容器中增加元素
+    vector<int> v;
+    v += 1, 2, 3, 4, 5, 6, 9*9; 
+    for_each(v.begin(), v.end(), print<int>);
+
+    set<string> s;
+    s += "cpp", "md";
+    for_each(s.begin(), s.end(), print<string>);
+
+    map<int, string> m;
+    m += make_pair(1, "one"), make_pair(2, "two");
+    for_each(m.begin(), m.end(), print<pair<int, string>>);
+
+    push_back(v)(7)(8)(9);
+    for_each(v.begin(), v.end(), print<int>);
+
+    list<string> l;
+    push_front(l)("cpp")("java");
+    for_each(l.begin(), l.end(), print<string>);
+
+    set<double> sd;
+    insert(sd)(1.1)(2.2)(3.3);
+    for_each(sd.begin(), sd.end(), print<double>);
+
+    insert(m)(3, "t")(4, "f");
+    for_each(m.begin(), m.end(), print<pair<int, string>>);
+
+    push_back(v), 1, 2, 3, 4, 5;
+    push_back(v)(6), 7, 8, (9), 10;
+    for_each(v.begin(), v.end(), print<int>);
+
+
+    //初始化容器元素
+    vector<int> vec = list_of(1)(2)(3)(4)(5);
+    for_each(vec.begin(), vec.end(), print<int>);
+
+    deque<string> deq = (list_of("one")("two"), "t", ("f"));
+    for_each(deq.begin(), deq.end(), print<string>);
+
+    map<int, string> mp = (list_of(make_pair(1, "one"))(make_pair(2, "two")), make_pair(3, "t"));
+    for_each(mp.begin(), mp.end(), print<pair<int, string>>);
+
+    map<int, string> mp2 = map_list_of(1, "cpp")(2, "java");
+    for_each(mp2.begin(), mp2.end(), print<pair<int, string>>);
+
+    //减少重复输入
+    vector<int> v2 = list_of(1).repeat(3, 100).repeat(4, 1000);
+    for_each(v2.begin(), v2.end(), print<int>);
+
+    vector<int> v3;
+    push_back(v3).range(v.begin(), v.begin()+5);
+    for_each(v3.begin(), v3.end(), print<int>);
+
+    stack<int> stk = (list_of(1), 2, 3).to_adapter();
+
+    queue<string> q = (list_of("java")("md")("c")).to_adapter();
+
+    vector<vector<int>> vv;
+    vv += list_of(5)(6), list_of(7)(8);
+
+    int a = 1, b = 2, c = 3;
+    vector<int> v4 = ref_list_of<3>(a)(b)(c);
+    for_each(v4.begin(), v4.end(), print<int>);
+
+    return ;
+}
+
 int main()
 {
     //timer
@@ -100,6 +183,10 @@ int main()
     //TestTypeof();
     
     //optional
-    TestOptional();
+    //TestOptional();
+
+    //assign
+    TestAssign();
+
 	return 0;
 }
