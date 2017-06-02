@@ -171,6 +171,45 @@ void TestAssign()
     return ;
 }
 
+class test
+{
+public:
+    void swap(test &l)
+    {
+        cout<<"test swap"<<endl;
+    }
+};
+
+void swap(test &r, test &l)
+{
+    r.swap(l);
+}
+
+//swap
+void TestSwap()
+{
+    int x[10];
+    int y[10];
+    fill_n(x, 10, 5);
+    fill_n(y, 10, 10);
+    boost::swap(x, y);
+    for_each(x, x+10, print<int>);
+    for_each(y, y+10, print<int>);
+
+    int x2[20];
+    int y2[10];
+    fill_n(x2, 20, 5);
+    fill_n(y2, 10, 10);
+    //boost::swap(x2, y2); //编译报错
+
+    test a;
+    test b;
+    std::swap(a, b);
+    boost::swap(a, b);  //会调用swap(test &, test &);
+
+    return ;
+}
+
 int main()
 {
     //timer
@@ -186,7 +225,10 @@ int main()
     //TestOptional();
 
     //assign
-    TestAssign();
+    //TestAssign();
+    
+    //swap
+    //TestSwap();
 
 	return 0;
 }

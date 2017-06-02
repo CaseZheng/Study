@@ -15,6 +15,7 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/optional.hpp>
 #include <boost/assign.hpp>
+#include <boost/swap.hpp>
 
 using namespace std;
 using namespace boost;
