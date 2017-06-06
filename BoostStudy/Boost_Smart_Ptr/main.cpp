@@ -105,6 +105,34 @@ boost::shared_ptr<E> create2()
     return boost::shared_ptr<E>(new F);
 }
 
+class G
+{
+public:
+    G()
+    {
+        cout<<"ctor G :"<<this<<endl;
+    }
+    ~G()
+    {
+        cout<<"dtor G :"<<this<<endl;
+    }
+
+};
+
+void DeleteG(G *g)
+{
+    if(g != NULL)
+    {
+        cout<<"delete G :"<<g<<endl;
+        delete g;
+    }
+}
+
+void AryF(void * p)
+{
+        cout<<"AryF"<<endl;
+}
+
 void TestSharedPtr()
 {
     boost::shared_ptr<int> sp1(new int(10));
@@ -154,14 +182,14 @@ void TestSharedPtr()
         E * E1 = create1();
         boost::shared_ptr<E> E2 = create2();
 
-        //delete E1;              //E1必须手动调用delete 而E2在出作用域后自动调用
+        delete (F*)E1;              //E1必须手动调用delete 而E2在出作用域后自动调用 E的析构函数是protected的，所需需要转型为F再delete
     }
     cout<<"桥接模式结束"<<endl;
 
-
-
     //定制删除器
+    boost::shared_ptr<G> pg(new G(), DeleteG);
 
+    boost::shared_ptr<void> pv(NULL, AryF);
 }
 
 int main()
