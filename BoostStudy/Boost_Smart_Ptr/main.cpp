@@ -192,6 +192,48 @@ void TestSharedPtr()
     boost::shared_ptr<void> pv(NULL, AryF);
 }
 
+class H : public boost::enable_shared_from_this<H>
+{
+public:
+    H(int _n) : n(_n)
+    {
+        cout<<"H ctor"<<endl;
+    }
+    void print()
+    {
+        cout<<"H n:"<<n<<endl;
+    }
+    int n;
+};
+
+void TestWeakPtr()
+{
+    boost::shared_ptr<int> sp1(new int(10));
+    cout<<"sp1 use_count:"<<sp1.use_count()<<endl;
+    boost::weak_ptr<int> wp1(sp1);
+    cout<<"sp1 use_count:"<<sp1.use_count()<<endl;
+    cout<<"wp1 use_count:"<<wp1.use_count()<<endl;
+
+    if(!wp1.expired())
+    {
+        boost::shared_ptr<int> sp2 = wp1.lock();
+        cout<<"sp1 use_count:"<<sp1.use_count()<<endl;
+        cout<<"sp2 use_count:"<<sp2.use_count()<<endl;
+    }
+    cout<<"sp1 use_count:"<<sp1.use_count()<<endl;
+    sp1.reset();
+
+    cout<<"wp1 use_count:"<<wp1.use_count()<<endl;
+
+    boost::shared_ptr<H> sh = boost::make_shared<H>(314);
+    sh->print();
+    boost::shared_ptr<H> sh2 = sh->shared_from_this();
+    sh->n = 1000;
+    sh2->print();
+    sh->print();
+}
+
+
 int main()
 {
     cout<<"main start"<<endl;
@@ -203,7 +245,10 @@ int main()
     //TestScopedPtr();
 
     //shared_ptr
-    TestSharedPtr();
+    //TestSharedPtr();
+
+    //weak_ptr
+    TestWeakPtr();
     
     cout<<"main finish"<<endl;
 	return 0;
