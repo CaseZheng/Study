@@ -8,6 +8,7 @@
 
 import os
 import sys
+import MySQLdb as MYSQL
 
 ##
 # Synopsis: MySQL封装类
@@ -24,10 +25,13 @@ class MySQLClient(object):
         self.m_user = kw.get('user');
         self.m_password = kw.get('password');
         self.m_mysql = None;
+        self.m_cursor = None;
         self.Connect();
         pass
 
     def __del__(self):
+        if self.m_mysql != None:
+            self.m_mysql.close()
         pass
 
     ##
@@ -39,39 +43,47 @@ class MySQLClient(object):
     def ExceptionHandling(func):
         def function(self, *args, **kw):
             try:
-                return True, func(self, *args, **kw)
+                return func(self, *args, **kw), True
             except BaseException:
-                return False, "error"
+                return "error", False
         return function
 
 
     ##
     # Synopsis: 连接Mysql
+    @ExceptionHandling
     def Connect(self):
+        self.m_mysql = MYSQL.connect(host=self.m_host, port=self.m_port, \
+                        user=self.m_user, db=self.m_db, passwd=self.m_password);
+        if self.m_mysql != None:
+            self.m_cursor = self.m_mysql.cursor()
         pass
 
     ##
-    # Synopsis: GetMySQL 得到MySQL连接的唯一出口
+    # Synopsis: GetMySQL 得到MySQL游标的唯一出口
     #
-    # Return: 返回MySQL连接，如果连接不到返回None
+    # Return: 返回MySQL连接游标，如果连接不到返回None
     def GetMySQL(self):
-        if None == self.m_mysql:
+        if None == self.m_cursor:
             # 为空，则连接下
             self.Connect();
 
             # 还是为空，返回None
-            if None == self.m_mysql:
+            if None == self.m_cursor:
                 return None
 
-            self.m_mysql = None
-        return self.m_mysql
+            self.m_cursor = None
+        return self.m_cursor
 
     ################################ mysql方法封装，需要用哪个命令加入下即可 #################
     #
-    # 对mysql方法的封装，返回值为两个，第一个未当前命令是否发送成功 第二个为MySQL Server返回信息
     @ExceptionHandling
-    def Ping(self):
-        return self.GetMySQL().ping();
+    def Execute(self, sql):
+        return self.GetMySQL().execute(sql);
+
+    @ExceptionHandling
+    def Fetchone(self):
+        return self.GetMySQL().fetchone();
     #
     ################################ mysql方法封装，需要用哪个命令加入下即可 #################
 
@@ -174,6 +186,13 @@ def InitMySQL(*args, **kw):
 
 # 测试代码
 if '__main__' == __name__:
-    InitMySQL(host="192.168.201.94", port=, password=None);
+    InitMySQL(host="127.0.0.1", port=3306, user='root', db='mydb', password='167349');
+    mysql = GetMySQLByName()
+    if mysql != None:
+        mysql.Execute("select version();")
+        print mysql.Fetchone()
+        mysql.Execute("show tables;")
+        print mysql.Fetchone()
+    print mysql
     sys.stdout.flush()
     pass

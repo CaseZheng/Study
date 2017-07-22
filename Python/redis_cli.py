@@ -40,29 +40,28 @@ class RedisClient():
     def ExceptionHandling(func):
         def function(self, *args, **kw):
             try:
-                return True, func(self, *args, **kw)
+                return func(self, *args, **kw), True
             except redis.ConnectionError:
-                return False, "ConnectionError"
+                return "ConnectionError", False
             except redis.DataError:
-                return False, "DataError"
+                return "DataError", False
             except redis.ExecAbortError:
-                return False, "ExecAbortError"
+                return "ExecAbortError", False
             except redis.NoScriptError:
-                return False, "NoScriptError"
+                return "NoScriptError", False
             except redis.PubSubError:
-                return False, "PubSubError"
+                return "PubSubError", False
             except redis.RedisError:
-                return False, "RedisError"
+                return "RedisError", False
             except redis.ResponseError:
-                return False, "ResponseError"
+                return "ResponseError", False
             except redis.TimeoutError:
-                return False, "TimeoutError"
+                return "TimeoutError", False
             except redis.WatchError:
-                return False, "WatchError"
+                return "WatchError", False
             except BaseException:
-                return False, "error"
+                return "error", False
         return function
-
 
     ##
     # Synopsis: 连接Redis 创建RedisPool
@@ -222,10 +221,9 @@ def InitRedis(*args, **kw):
 
 # 测试代码
 if '__main__' == __name__:
-    InitRedis(host="192.168.200.143", port=6321, password=None);
-    InitRedis(name='1', host="192.168.200.144", port=6321, password=None);
+    InitRedis(host="127.0.0.1", port=6379, password=None);
     rm = GetRedisByName()
     print rm.Ping()
-    print GetRedisByName(name='1')
+    print rm.HGetAll("he")
     sys.stdout.flush()
     pass
