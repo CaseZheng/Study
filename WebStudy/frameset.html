@@ -1,0 +1,22 @@
+<!DOCTYTP html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>frameset学习</title>
+    </head>
+    <!--frameset和body同级，有frameset就不能有body-->
+    <frameset rows="200px, *" border="5" bordercolor="red" frameborder="yes"> 
+        <frame src="http://www.casezheng.date" noresize="noresize" >
+        <frameset cols="50%, *">
+            <frame name="showhtmll" src="http://www.baidu.com" scrolling="no" noresize="noresize" >
+            <frame name="showhtmlr" src="http://www.sohu.com" noresize="noresize" >
+        </frameset>
+    </frameset>
+    <!--当浏览器不支持框架集时显示下面的内容-->
+    <noframes>
+        <body>
+            您的浏览器不支持框架集
+        </body>
+    </noframes>
+</html?
+
