@@ -45,10 +45,6 @@ class RedisClient():
                 return "ConnectionError", False
             except redis.DataError:
                 return "DataError", False
-            except redis.ExecAbortError:
-                return "ExecAbortError", False
-            except redis.NoScriptError:
-                return "NoScriptError", False
             except redis.PubSubError:
                 return "PubSubError", False
             except redis.RedisError:
@@ -120,6 +116,10 @@ class RedisClient():
     @ExceptionHandling
     def HGetAll(self, key):
         return self.GetRedis().hgetall(key)
+
+    @ExceptionHandling
+    def HDel(self, key1, key2):
+        return self.GetRedis().hdel(key1, key2)
 
     @ExceptionHandling
     def HSet(self, key1, key2, value):
@@ -221,9 +221,10 @@ def InitRedis(*args, **kw):
 
 # 测试代码
 if '__main__' == __name__:
-    InitRedis(host="127.0.0.1", port=6379, password=None);
+    InitRedis(host="192.168.200.143", port=6321, password=None);
+    InitRedis(name='1', host="192.168.200.144", port=6321, password=None);
     rm = GetRedisByName()
     print rm.Ping()
-    print rm.HGetAll("he")
+    print GetRedisByName(name='1')
     sys.stdout.flush()
     pass

@@ -30,7 +30,9 @@ class MySQLClient(object):
         pass
 
     def __del__(self):
-        if self.m_mysql != None:
+        if self.m_cursor is not None:
+            self.m_cursor.close()
+        if self.m_mysql is not None:
             self.m_mysql.close()
         pass
 
@@ -54,36 +56,42 @@ class MySQLClient(object):
     @ExceptionHandling
     def Connect(self):
         self.m_mysql = MYSQL.connect(host=self.m_host, port=self.m_port, \
-                        user=self.m_user, db=self.m_db, passwd=self.m_password);
+                        user=self.m_user, db=self.m_db, passwd=self.m_password, \
+                        charset='utf8');
         if self.m_mysql != None:
-            self.m_cursor = self.m_mysql.cursor()
-        pass
+            return True
+        else:
+            return False
 
     ##
     # Synopsis: GetMySQL 得到MySQL游标的唯一出口
     #
     # Return: 返回MySQL连接游标，如果连接不到返回None
     def GetMySQL(self):
-        if None == self.m_cursor:
+        if None == self.m_mysql:
             # 为空，则连接下
             self.Connect();
-
-            # 还是为空，返回None
-            if None == self.m_cursor:
-                return None
-
-            self.m_cursor = None
-        return self.m_cursor
+        return self.m_mysql.cursor()
 
     ################################ mysql方法封装，需要用哪个命令加入下即可 #################
     #
     @ExceptionHandling
     def Execute(self, sql):
-        return self.GetMySQL().execute(sql);
+        cursor = self.GetMySQL()
+        ret = cursor.execute(sql);
+        self.m_mysql.commit();
+        cursor.close()
+        return ret
 
     @ExceptionHandling
-    def Fetchone(self):
-        return self.GetMySQL().fetchone();
+    def QueryExecute(self, sql):
+        cursor = self.GetMySQL()
+        ret = cursor.execute(sql);
+        self.m_mysql.commit();
+        ret = cursor.fetchall();
+        self.m_mysql.commit();
+        cursor.close()
+        return ret
     #
     ################################ mysql方法封装，需要用哪个命令加入下即可 #################
 
