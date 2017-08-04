@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>form 表單學習 </title>
+</head>
+<body>
+    <form action="" name="myFrom" enctype="multipart/form-data" method="post">
+        <label for="yonghu">用户名：</label><input type="text" id="yonghu"/> <br/>
+        密码：<input type="password"/>
+        <hr/>
+        <label for="radio11">单选框1</label><input type="radio" name="radio1" id="radio11" checked="checked" value="1"/> <br/>
+        <label for="radio22">单选框2</label><input type="radio" name="radio1" id="radio22"/> <br/>
+        复选框1<input name="box1" type="checkbox" checked="checked"/>
+        复选框2<input name="box1" type="checkbox" checked="checked"/>
+        复选框3<input name="box1" type="checkbox"/>
+        <hr/>
+        <select id="" name="area" size=3 >
+            <optgroup label="中国">
+                <option value="1" disabled="disabled">北京</option>
+                <option value="2" selected="selected">上海</option>
+                <option value="3">深圳</option>
+            </optgroup>
+            <optgroup label="美国">
+                <option value="4">芝加哥</option>
+                <option value="5">华盛顿</option>
+            </optgroup>
+        </select>
+        <hr/>
+        <textarea id="" name="" cols="30" rows="10" placeholder="提示1" readonly="readonly"></textarea>
+        <hr>
+        <textarea id="" name="" cols="30" rows="10" placeholder="提示2" required="required"></textarea>
+        <hr/>
+        <input type="submit"/>
+    </form>  
+    <hr>
+    <form action="">
+        <input type="hidden" name="隐藏的名字" value="隐藏的值">
+        <input type="submit"/>
+    </form>
+</body>
+</html>
