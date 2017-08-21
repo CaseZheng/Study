@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>div学习 HTML5新标签</title>
+    <style>
+        header{background-color:red; height:100px;}
+        nav{background-color:deeppink; height:100px;}
+        .content{background-color:blue; height:400px;}
+        footer{background-color:yellow; height:100px;}
+        .left{background-color:aqua; width:30%; display:inline-block}
+        .right{background-color:coral; width:69.5%; display:inline-block}}
+    </style>
+</head>
+<body>
+    <header></header>
+    <!--<div class="header"></div>-->
+    <nav></nav>
+    <!--<div class="nav"></div>-->
+    <div class="content">
+        <div class="left">
+            <address>联系方式</address>
+            <ruby>
+                哈哈<rt>haha</rt>
+                <rp>显示不出来</rp>
+            </ruby>
+            <section>
+                <hl>PRC</hl>
+                <p>hahahahah</p>
+            </section>
+        </div>
+        <div class="right">
+            <details>
+                <summary>点击查看</summary>
+                看不到内容
+            </details>
+            <p>喜欢<mark>英语</mark>？</p>
+            <progress value="1" min="0" max="10"></progress>
+            <video src="" controls>不支持video</video>
+            <video controls>
+                <source src="xxx.mp4" type="video/ogg"></source>
+                <source src="xxx.ogg" type="videe/map4"></source>
+                <source src="xxx.webm" type="videe/webm"></source>
+            </video>
+            <hr>
+            <input list="cars">
+            <datalist id="cars">
+                <option value="BMW"></option>
+                <option value="DFE"></option>
+                <option value="FE"></option>
+            </datalist>
+        </div>
+    </div>
+    <!--<div class="footer"></div>-->
+    <footer>
+        <time datatime="2017-08-04">这一天</time>
+    </footer>
+</body>
+</html>
