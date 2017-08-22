@@ -1,1 +1,0 @@
-/home/CaseZheng/Study/DesignPattern/CMakeFiles/singleton.dir
