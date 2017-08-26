@@ -28,17 +28,18 @@ else()
 endif() 
 
 
-SET(PROJECT_BINARY_DIR ./build)
+SET(PROJECT_BINARY_DIR .)
+SET(EXECUTABLE_OUTPUT_PATH .)
 
 #3.头文件目录
-INCLUDE_DIRECTORIES(.)
+INCLUDE_DIRECTORIES(../)
 
 #4.源文件目录
-AUX_SOURCE_DIRECTORY(. DIR_SOURCE)
+AUX_SOURCE_DIRECTORY(../ DIR_SOURCE)
 
 #5.设置环境变量等
 #将要编译连接的所有文件 赋值给SOURCE_LIST变量
-SET(SOURCE_CLIENT_LIST singleton.cpp)
+SET(SOURCE_CLIENT_LIST ../singleton.cpp)
 
 #client最后生成的可执行文件名 赋值给BIN_NAME变量
 SET(BIN_CLIENT_NAME singleton)
