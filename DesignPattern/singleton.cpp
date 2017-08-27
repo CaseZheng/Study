@@ -59,9 +59,47 @@ public:
 };
 SingletonTwo* SingletonTwo::_instance = nullptr;
 
+template <class T>
+class SingletonThree
+{
+private:
+    SingletonThree(){}
+    SingletonThree(const SingletonThree &right);
+    SingletonThree & operator=(const SingletonThree &right);
+    static T _instance;
+public:
+    static T& Instance()
+    {
+        return _instance;
+    };
+    virtual ~SingletonThree(){}
+};
+
+template <class T>
+T SingletonThree<T>::_instance;
+
+class A 
+{
+public:
+    A()
+    {
+        cout<<__FUNCTION__<<endl;
+    }
+    virtual ~A()
+    {
+        cout<<__FUNCTION__<<endl;
+    }
+    void print()
+    {
+        cout<<__FUNCTION__<<endl;
+    }
+};
+typedef SingletonThree<A> SingletonA;   //SingletonA
+
 int main()
 {
-    SingletonOne::Instance().print();
-    SingletonTwo::Instance()->print();
+    //SingletonOne::Instance().print();
+    //SingletonTwo::Instance()->print();
+    SingletonA::Instance().print();
     return 0;
 }
