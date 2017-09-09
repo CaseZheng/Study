@@ -42,7 +42,7 @@ public:
     ~ConcreteFactory()
     {
     }
-    Product* CreateProduct()
+    void* CreateProduct()
     {
         return new ConcreteProduct();
     }
