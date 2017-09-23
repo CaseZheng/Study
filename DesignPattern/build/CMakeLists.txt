@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 #2.PROJECT命令表明产生的工作空间的名称
-PROJECT(Boost_Project)
+PROJECT(DesignPattern_Project)
 
 MESSAGE(STATUS "Project Name: ${PROJECT_NAME}")               # 打印相关消息消息 
 MESSAGE(STATUS "Project Directory: ${PROJECT_SOURCE_DIR}")
