@@ -12,13 +12,45 @@ void accept_cb(int fd, short events, void *arg);
 void socket_read_cb(int fd, short events, void *arg);
 int tcp_server_init(int port, int listen_num);
 void log_cb(int severity, const char *msg);
+void exit_cb(int exitcode)
+{
+    cout<<"exitcode: "<<exitcode<<endl;
+    exit(exitcode);
+}
+
+void *my_malloc(size_t sz)
+{
+    cout<<"my_malloc size: "<<sz<<endl;
+    void * p = malloc(sz);
+    cout<<"ptr: "<<long(p)<<endl;
+    return p;
+}
+
+void *my_realloc(void *ptr, size_t sz)
+{
+    cout<<"my_realloc ptr: "<<long(ptr)<<" size: "<<sz<<endl;
+    void * p = realloc(ptr, sz);
+    cout<<"my_realloc ptr: "<<long(ptr)<<" size: "<<sz<<endl;
+    return p;
+}
+
+void my_free(void *ptr)
+{
+    cout<<"my_free ptr: "<<(long)ptr<<endl;
+    return free(ptr);
+}
 
 int main()
 {
+    event_set_mem_functions(my_malloc, \
+            my_realloc, \
+            my_free);
 
     event_set_log_callback(log_cb);
 
     event_enable_debug_logging(EVENT_DBG_ALL);
+
+    event_set_fatal_callback(exit_cb);
 
     int listener = tcp_server_init(9999, 5);
     if(listener == -1)

@@ -62,5 +62,8 @@ int main()
     event_free(timeout_event);
     event_base_free(base);
 
+    //libevent_global_shutdown();
+    cout<<"libevent_global_shutdown"<<endl;
+
     return 0;
 }
