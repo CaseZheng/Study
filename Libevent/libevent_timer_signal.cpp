@@ -27,18 +27,36 @@ static void signal_cb(evutil_socket_t fd, short events, void *arg)
 
     cout<<"1 s after exit"<<endl;
 
-    event_base_loopexit(base, &delay);
+    //event_base_loopexit(base, &delay);
+    //event_base_loopexit(base, NULL);
+    //event_base_loopbreak(base);
+    event_base_loopcontinue(base);
 }
 
 int main()
 {
-    struct event_base *base = event_base_new();
+    event_config *cnf = event_config_new();
+    if(NULL == cnf)
+    {
+        cout<<"event_config_new error"<<endl;
+        return 0;
+    }
+    event_config_avoid_method(cnf, "select");
+    event_config_require_features(cnf, EV_FEATURE_ET);
+    event_config_set_flag(cnf, EVENT_BASE_FLAG_NOLOCK|EVENT_BASE_FLAG_EPOLL_USE_CHANGELIST|EVENT_BASE_FLAG_PRECISE_TIMER);
+
+    struct event_base *base = event_base_new_with_config(cnf);
+    //struct event_base *base = event_base_new();
     if(NULL == base)
     {
         cout<<"event_base_new error"<<endl;
         cout<<strerror(errno)<<endl;
         return 0;
     }
+    event_config_free(cnf);
+    cnf = NULL;
+    cout<<"io: "<<event_base_get_method(base)<<endl;
+    cout<<"features: "<<hex<<event_base_get_features(base)<<endl;
 
     struct event *signalevent = evsignal_new(base, SIGINT, signal_cb, (void*)base);
     event_add(signalevent, NULL);
@@ -58,12 +76,15 @@ int main()
     evutil_gettimeofday(&lasttime, NULL);
 
     event_base_dispatch(base);
+
+    cout<<"break: "<<event_base_got_break(base)<<endl;
+    cout<<"exit: "<<event_base_got_exit(base)<<endl;
+
     event_free(signalevent);
     event_free(timeout_event);
     event_base_free(base);
 
     //libevent_global_shutdown();
     cout<<"libevent_global_shutdown"<<endl;
-
     return 0;
 }
