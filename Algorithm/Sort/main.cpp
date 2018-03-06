@@ -398,6 +398,38 @@ void HeapSort(vector<int> &vec)                 //堆排序
     }
 }
 
+void CountingSort(vector<int> &vec)             //计数排序
+{
+    if(vec.size() < 1)
+    {
+        return;
+    }
+    int maxValue = vec[0];
+    int minValue = vec[0];
+    for(auto x : vec)
+    {
+        maxValue = x>maxValue ? x : maxValue;
+        minValue = x<minValue ? x : minValue;
+    }
+    vector<int> c(maxValue-minValue+1, 0);
+    for(auto x : vec)
+    {
+        ++c[x-minValue];        //统计vec各元素出现的次数
+    }
+    for(int i=1; i<=maxValue-minValue; ++i)
+    {
+        c[i] += c[i-1];         //分布值计算
+    }
+    vector<int> s(vec.size(), 0);
+    for(int i=vec.size()-1; i>=0; --i)
+    {
+        int j = vec[i] - minValue;
+        s[c[j]-1] = vec[i];
+        --c[j];
+    }
+    vec = s;
+}
+
 int main()
 {
     vector<int> vecTest = {4, 9, 7, 20, 3, 16, 18};
@@ -411,6 +443,7 @@ int main()
     //cout<<"快速排序（迭代）"<<endl ; vec = vecTest ; PrintVec(vec) ; QuickSort(vec)           ; PrintVec(vec) ;
     //cout<<"归并排序（递归）"<<endl ; vec = vecTest ; PrintVec(vec) ; MergeSort_Recursion(vec) ; PrintVec(vec) ;
     //cout<<"归并排序（迭代）"<<endl ; vec = vecTest ; PrintVec(vec) ; MergeSort(vec)           ; PrintVec(vec) ;
+    cout<<"计数排序"<<endl           ; vec = vecTest ; PrintVec(vec) ; CountingSort(vec)        ; PrintVec(vec) ;
     //cout<<"堆排序"<<endl           ; vec = vecTest ; PrintVec(vec) ; HeapSort(vec)            ; PrintVec(vec) ;
 
     vecTest = {49, 55, 25, 97, 60, 27, 49, 50} ;
