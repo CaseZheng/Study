@@ -430,6 +430,34 @@ void CountingSort(vector<int> &vec)             //计数排序
     vec = s;
 }
 
+void ShellSort(vector<int> &vec)                //希尔排序 
+{
+    if(vec.size() < 2)
+    {
+        return;
+    }
+    int i, j, flag, counter=1, gap=vec.size();
+    int temp;
+    while(gap > 1)
+    {
+        gap = gap/2;
+        do 
+        {
+            flag = 0;
+            for(int i=0; i<=vec.size()-gap-counter; ++i)
+            {
+                j=i+gap;
+                if(vec[i] > vec[j])
+                {
+                    Swap(vec[i], vec[j]);
+                    flag = 1;
+                }
+            }
+        }
+        while(counter < vec.size() && flag == 1);
+    }
+}
+
 int main()
 {
     vector<int> vecTest = {4, 9, 7, 20, 3, 16, 18};
@@ -443,8 +471,9 @@ int main()
     //cout<<"快速排序（迭代）"<<endl ; vec = vecTest ; PrintVec(vec) ; QuickSort(vec)           ; PrintVec(vec) ;
     //cout<<"归并排序（递归）"<<endl ; vec = vecTest ; PrintVec(vec) ; MergeSort_Recursion(vec) ; PrintVec(vec) ;
     //cout<<"归并排序（迭代）"<<endl ; vec = vecTest ; PrintVec(vec) ; MergeSort(vec)           ; PrintVec(vec) ;
-    cout<<"计数排序"<<endl           ; vec = vecTest ; PrintVec(vec) ; CountingSort(vec)        ; PrintVec(vec) ;
+    //cout<<"计数排序"<<endl         ; vec = vecTest ; PrintVec(vec) ; CountingSort(vec)        ; PrintVec(vec) ;
     //cout<<"堆排序"<<endl           ; vec = vecTest ; PrintVec(vec) ; HeapSort(vec)            ; PrintVec(vec) ;
+    //cout<<"希尔排序"<<endl         ; vec = vecTest ; PrintVec(vec) ; ShellSort(vec)           ; PrintVec(vec) ;
 
     vecTest = {49, 55, 25, 97, 60, 27, 49, 50} ;
 
