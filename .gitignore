@@ -3,3 +3,6 @@ cscope.out
 tags
 *.exe
 build
+Libevent/libevent_http_server
+Libevent/libevent_server
+Libevent/libevent_timer_signal

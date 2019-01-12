@@ -1,6 +1,6 @@
 #include "public.h"
 
-#if 0
+#if 1
 //同步客户端
 int main(int argc, char *argv[])
 {
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
 
 
-#if 1
+#if 0
 int main(int argc, char *argv[])
 {
     io_service service;
