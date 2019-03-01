@@ -32,10 +32,10 @@ SET(PROJECT_BINARY_DIR .)
 SET(EXECUTABLE_OUTPUT_PATH .)
 
 #3.头文件目录
-INCLUDE_DIRECTORIES(../)
+INCLUDE_DIRECTORIES(../ ../libco)
 
 #4.源文件目录
-AUX_SOURCE_DIRECTORY(../ DIR_SOURCE)
+AUX_SOURCE_DIRECTORY(../ ../libco)
 
 #5.设置环境变量等
 
@@ -49,13 +49,19 @@ SET(SOURCE_LIST_THREAD ../thread_study.cpp)
 SET(BIN_NAME_THREAD thread_study)
 ADD_EXECUTABLE(${BIN_NAME_THREAD} ${SOURCE_LIST_THREAD})
 
-# 协程 coroutine
-SET(SOURCE_LIST_COROUTINE ../coroutine_study.cpp)
-SET(BIN_NAME_COROUTINE coroutine_study)
-ADD_EXECUTABLE(${BIN_NAME_COROUTINE} ${SOURCE_LIST_COROUTINE})
-
 #需要链接的动态库
 SET(SO_LIST pthread boost_thread boost_system boost_chrono)
-
-#7.添加可执行文件所需要的库
 TARGET_LINK_LIBRARIES(${BIN_NAME_THREAD} ${SO_LIST})
+
+
+# 协程 libco
+SET(SOURCE_LIST_LIBCO_COROUTINE ../libco_coroutine_study.cpp)
+SET(BIN_NAME_LIBCO_COROUTINE libco_coroutine_study)
+ADD_EXECUTABLE(${BIN_NAME_LIBCO_COROUTINE} ${SOURCE_LIST_LIBCO_COROUTINE})
+
+SET(SO_LIST pthread)
+TARGET_LINK_LIBRARIES(${BIN_NAME_LIBCO_COROUTINE} ${SO_LIST})
+
+FIND_LIBRARY(LIBCOLIB libcolib.a ../libco/)                                                                                                                                                            
+#需要链接的静态库                            
+TARGET_LINK_LIBRARIES(${BIN_NAME_LIBCO_COROUTINE} ${LIBCOLIB})
