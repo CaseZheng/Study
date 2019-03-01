@@ -55,7 +55,7 @@ SET(BIN_NAME_COROUTINE coroutine_study)
 ADD_EXECUTABLE(${BIN_NAME_COROUTINE} ${SOURCE_LIST_COROUTINE})
 
 #需要链接的动态库
-SET(SO_LIST pthread)
+SET(SO_LIST pthread boost_thread boost_system boost_chrono)
 
 #7.添加可执行文件所需要的库
 TARGET_LINK_LIBRARIES(${BIN_NAME_THREAD} ${SO_LIST})
