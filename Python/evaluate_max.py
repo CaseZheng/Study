@@ -1,5 +1,11 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 import json
 import copy
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 iStardardPrice = 10000
 
@@ -105,4 +111,13 @@ print("排列组合个数:%d" % (iPermutationsSize))
 for aIdList in unKonwnAId:
     print("排列组合:%s" % (aIdList))
 print("排列组合个数:%d" % (len(unKonwnAId)))
+
+for option in unKonwnAId:
+    for aId in konwnAId:
+        option.append(aId)
+for aIdList in unKonwnAId:
+    print("排列组合:%s" % (aIdList))
+
+for option in unKonwnAId:
+    pass
 
