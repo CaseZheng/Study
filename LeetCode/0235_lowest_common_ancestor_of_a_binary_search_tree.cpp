@@ -45,6 +45,29 @@ public:
         {
             return NULL;
         }
+        
+        TreeNode *pTmp = root;
+        TreeNode *pTmp1 = root;
+        TreeNode *pTmp2 = root;
+        while(NULL!=pTmp1 && NULL!=pTmp2 && pTmp1==pTmp2)
+        {
+            pTmp = pTmp1;
+            pTmp1 = (pTmp1->val < p->val && pTmp1!=p) ? pTmp1->right : (pTmp1==p ? pTmp1 : pTmp1->left);     //小于被搜索节点 向右走
+            pTmp2 = (pTmp2->val < q->val && pTmp2!=q) ? pTmp2->right : (pTmp2==q ? pTmp2 : pTmp2->left);
+        }
+      
+        return pTmp;
+    }
+};
+
+#if 0
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(NULL==p || NULL==q)
+        {
+            return NULL;
+        }
         queue<TreeNode *> q1;
         queue<TreeNode *> q2;
         
@@ -82,6 +105,7 @@ public:
         return pTmp;
     }
 };
+#endif
 
 int main()
 {
