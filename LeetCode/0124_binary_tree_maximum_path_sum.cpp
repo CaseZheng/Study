@@ -36,20 +36,19 @@ struct TreeNode {
 
 class Solution {
 public:
-    void maxPathSum(TreeNode* root, int &iMaxPath, int &iMaxTruncated, int &iMaxSubTree)
+    void maxPathSum(TreeNode* root, int &iMaxPath, int &iMaxSubTree)
     {
         if(NULL == root)
         {
             return;
         }
-        int iLeftMaxPath=0, iLeftMaxSubTree=0, iLeftMaxTruncated=0, iRightMaxPath=0, iRightMaxSubTree=0, iRightMaxTruncated=0;
-        maxPathSum(root->left, iLeftMaxPath, iLeftMaxTruncated, iLeftMaxSubTree);
-        maxPathSum(root->right, iRightMaxPath, iRightMaxTruncated, iRightMaxSubTree);
+        int iLeftMaxPath=0, iLeftMaxSubTree=0, iRightMaxPath=0, iRightMaxSubTree=0;
+        maxPathSum(root->left, iLeftMaxPath, iLeftMaxSubTree);
+        maxPathSum(root->right, iRightMaxPath, iRightMaxSubTree);
         if(NULL==root->left && NULL==root->right)
         {
             iMaxPath = root->val;
             iMaxSubTree = root->val;
-            iMaxTruncated = root->val;
         }
         else
         {
@@ -58,55 +57,41 @@ public:
             iMaxPath = iLeftMax > iRightMax ? iLeftMax : iRightMax;
             iMaxPath = iMaxPath > root->val ? iMaxPath : root->val;
 
-            if(NULL!=root->left && NULL==root->right)
-            {
-                iMaxTruncated = iLeftMaxTruncated > iLeftMax ? iLeftMaxTruncated : iLeftMax;
-            }
-            else if(NULL==root->left && NULL!=root->right)
-            {
-                iMaxTruncated = iRightMaxTruncated > iRightMax ? iRightMaxTruncated : iRightMax;
-            }
-            else
-            {
-                iMaxTruncated = iLeftMaxTruncated > iRightMaxTruncated ? iLeftMaxTruncated : iRightMaxTruncated;
-                iMaxTruncated = iMaxTruncated > iMaxPath ? iMaxTruncated : iMaxPath;
-            }
-            iMaxTruncated = iMaxTruncated > root->val ? iMaxTruncated : root->val;
-            
             int iCurTree = iLeftMaxPath + iRightMaxPath + root->val;
             if(NULL!=root->left && NULL==root->right)
             {
                 iMaxSubTree = iLeftMaxSubTree > iCurTree ? iLeftMaxSubTree : iCurTree;
+                iMaxSubTree = iLeftMax > iMaxSubTree ? iLeftMax : iMaxSubTree;
             }
             else if(NULL==root->left && NULL!=root->right)
             {
                 iMaxSubTree = iRightMaxSubTree > iCurTree ? iRightMaxSubTree : iCurTree;
+                iMaxSubTree = iRightMax > iMaxSubTree ? iRightMax : iMaxSubTree;
             }
             else
             {
                 iMaxSubTree = iLeftMaxSubTree > iRightMaxSubTree ? iLeftMaxSubTree : iRightMaxSubTree;
                 iMaxSubTree = iMaxSubTree > iCurTree ? iMaxSubTree : iCurTree;
+                iMaxSubTree = iLeftMax > iMaxSubTree ? iLeftMax : iMaxSubTree;
+                iMaxSubTree = iRightMax > iMaxSubTree ? iRightMax : iMaxSubTree;
             }
+            iMaxSubTree = iMaxSubTree > root->val ? iMaxSubTree : root->val;
         }
     }
     int maxPathSum(TreeNode* root)
     {
         int iMaxPath=0;
         int iMaxSubTree=0;
-        int iMaxTruncated=0;
-        maxPathSum(root, iMaxPath, iMaxTruncated, iMaxSubTree);
-        int iRet = iMaxSubTree > iMaxPath ? iMaxSubTree : iMaxPath;
-        iRet = iMaxTruncated > iRet ? iMaxTruncated : iRet;
-        return iRet;
+        maxPathSum(root, iMaxPath, iMaxSubTree);
+        return iMaxPath > iMaxSubTree ? iMaxPath : iMaxSubTree;
     }
 };
 
-
-
 int main()
 {
-    //[-1,null,6,null,-4]           6
-    //[-10,9,20,null,null,15,7]     42
-    //[-10]                         -10
+    //[-1,null,6,null,-4]                   6
+    //[-10,9,20,null,null,15,7]             42
+    //[-10]                                 -10
+    //[-1,null,9,-6,3,null,null,null,-2]    12
     return 0;
 }
