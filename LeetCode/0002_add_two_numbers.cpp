@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stack>
 #include <unistd.h>
+#include "public.h"
 
 using namespace std;
 
@@ -12,13 +13,14 @@ using namespace std;
 输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
 输出：7 -> 0 -> 8
 原因：342 + 465 = 807
-*/
 
 struct ListNode {
 	int val;
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
 };
+*/
+
 
 class Solution {
 public:
@@ -72,26 +74,6 @@ public:
     }
 };
 
-void freeList(ListNode *p)
-{
-	while(p != NULL)
-	{
-        ListNode* pTmp = p->next;
-        free(p);
-        p = pTmp;
-	}
-}
-
-void printList(ListNode *p)
-{
-    while(p != NULL)
-    {
-        cout << p->val << " ";
-        p = p->next;
-    }
-    cout << endl;
-
-}
 
 int main()
 {

@@ -29,7 +29,6 @@ using namespace std;
 输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
 输出: 2
 解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
-*/
 
 struct TreeNode {
     int val;
@@ -37,6 +36,9 @@ struct TreeNode {
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
+
+*/
+
 
 class Solution {
 public:
