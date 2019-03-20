@@ -2,105 +2,99 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <list>
 
 using namespace std;
 
 /*
-   给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
-   你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
-   示例:
-   给定 nums = [2, 7, 11, 15], target = 9
-   因为 nums[0] + nums[1] = 2 + 7 = 9
-   所以返回 [0, 1]
+运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。
+获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。
+写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。
+
+进阶:
+你是否可以在 O(1) 时间复杂度内完成这两种操作？
+
+示例:
+LRUCache cache(2);	//缓存容量
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // 返回  1
+cache.put(3, 3);    // 该操作会使得密钥 2 作废
+cache.get(2);       // 返回 -1 (未找到)
+cache.put(4, 4);    // 该操作会使得密钥 1 作废
+cache.get(1);       // 返回 -1 (未找到)
+cache.get(3);       // 返回  3
+cache.get(4);       // 返回  4
 */
 
-
-class Solution {
+class LRUCache {
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        if(nums.size() < 2)
-        {
-            return vector<int>();
-        }
-        unordered_map<int, int> hMap;
-        for(int n=0; n<nums.size(); ++n)
-        {
-            auto it = hMap.find(target - nums[n]);
-            if(it != hMap.end())
-            {
-                return vector<int>{n, it->second};
-            }
-            hMap[nums[n]] = n;
-        }
+    struct Value
+    {
+        Value() {}
+        Value(int value, list<int>::iterator it) : m_iValue(value), m_it(it) {}
+        int m_iValue;
+        list<int>::iterator m_it;
+    };
 
-        return vector<int>();
-#if 0
-        vector<int> vRet;
-        if(nums.size() < 2)
-        {
-            return vRet;
-        }
-        //数组不一定有序, 排序
-        vector<int> vInt = nums;
-        sort(vInt.begin(), vInt.end());
-        
-        unsigned i=0, j=vInt.size()-1;
-        for(;i<j;)
-        {
-            int iTmp = vInt[i] + vInt[j];
-            if(iTmp == target)
-            {
-                break;
-            }
-            else if(iTmp < target)
-            {
-                ++i;
-            }
-            else
-            {
-                --j;
-            }
-        }
-        if(i<j)
-        {
-            int l=-1, r=-1;
-            for(int k=0; k<nums.size(); ++k)
-            {
-                if(nums[k] == vInt[i])
-                {
-                    l = k;
-                    break;
-                }
-            }
-            for(int k=0; k<nums.size(); ++k)
-            {
-                if(nums[k] == vInt[j] && l!=k)
-                {
-                    r = k;
-                    break;
-                }
-            }
-            if(l!=-1 && r!=-1)
-            {
-                vRet.push_back(l);
-                vRet.push_back(r);
-            }
-        }
-
-        return vRet;
-#endif
+    LRUCache(int capacity) : m_hash(capacity), m_iCapacity(capacity)
+ 	{
     }
+    
+    int get(int key) {
+        auto it=m_hash.begin();
+        if((it=m_hash.find(key)) != m_hash.end())
+        {
+            m_list.erase(it->second.m_it);
+            m_list.push_front(it->first);
+            it->second.m_it = m_list.begin();
+            return it->second.m_iValue;
+        }
+        else 
+        {
+            return -1;
+        }
+    }
+    
+    void put(int key, int value)
+    {
+        auto it=m_hash.begin();
+        if((it=m_hash.find(key)) != m_hash.end())
+        {
+            m_list.erase(it->second.m_it);
+            m_list.push_front(key);
+            it->second.m_iValue = value;
+            it->second.m_it = m_list.begin();
+            return;
+        }
+        if(m_hash.size() >= m_iCapacity)
+        {
+            auto it = m_hash.find(m_list.back());
+            m_list.erase(it->second.m_it);
+            m_hash.erase(it);
+        }
+        m_list.push_front(key);
+        Value oValue(value, m_list.begin());
+        m_hash[key] = oValue;
+    }
+
+private:
+	unordered_map<int, Value> m_hash;
+    list<int> m_list;
+    int m_iCapacity;
 };
 
 int main()
 {
-    vector<int> nums{2, 7, 11, 15};
-    int target = 9;
-    vector<int> twoSum(Solution().twoSum(nums, target));
-    for(int it : twoSum)
-    {
-        cout << it << " ";
-    }
-    cout << endl;
+    LRUCache cache(2);
+    cache.put(1, 1);
+    cache.put(2, 2);
+    cout << cache.get(1) << endl; // 返回  1
+    cache.put(3, 3);              // 该操作会使得密钥 2 作废
+    cout << cache.get(2) << endl; // 返回 -1 (未找到)
+    cache.put(4, 4);              // 该操作会使得密钥 1 作废
+    cout << cache.get(1) << endl; // 返回 -1 (未找到)
+    cout << cache.get(3) << endl; // 返回  3
+    cout << cache.get(4) << endl; // 返回  4
     return 0;
 }
