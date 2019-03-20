@@ -2,6 +2,7 @@
 #define _PUBLIC_H_
 
 #include <iostream>
+#include <stack>
 #include "unistd.h"
 
 using namespace std;
@@ -22,9 +23,14 @@ void freeList(ListNode *p)
 	}
 }
 
-void printList(ListNode *p)
+void printList(ListNode *p, ListNode*q=NULL)
 {
-    while(p != NULL)
+    if(p != NULL)
+    {
+        cout << p->val << " ";
+        p = p->next;
+    }
+    while(p!=NULL && p != q)
     {
         cout << p->val << " ";
         p = p->next;
