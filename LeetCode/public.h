@@ -27,12 +27,12 @@ void printList(ListNode *p, ListNode*q=NULL)
 {
     if(p != NULL)
     {
-        cout << p->val << " ";
+        cout << p << " "<< p->val << " ";
         p = p->next;
     }
     while(p!=NULL && p != q)
     {
-        cout << p->val << " ";
+        cout << p << " " << p->val << " ";
         p = p->next;
     }
     cout << endl;

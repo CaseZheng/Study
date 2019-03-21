@@ -40,6 +40,7 @@ public:
         ListNode *pHead = head;
         ListNode *pTail = pHead;
         while(NULL != pTail->next) { pTail = pTail->next; }
+        pTail = pTail->next;
 
         stack<ListNode *> s;
         s.push(pHead);
@@ -52,21 +53,14 @@ public:
         ListNode *pRightTail = NULL;
         while(!s.empty())
         {
+            pLeft = pLeftTail = pRight = pRightTail = NULL;
             pTail = s.top(); s.pop();
             pHead = s.top(); s.pop();
-            cout << "原串:  ";
-            printList(pHead, pTail);
-            if(pHead == pTail)
-            {
-                continue;
-            }
             ListNode *pDivision = pHead;
             pHead = pHead->next; 
-            pLeft = pLeftTail = pRight = pRightTail = NULL;
             do
             {
-                cout << "2222  " << pHead->val << endl;
-                if(pHead->val <= pDivision->val)
+                if(pHead->val < pDivision->val)
                 {
                     if(pLeft == NULL)
                     {
@@ -94,28 +88,32 @@ public:
                     pHead = pHead->next;
                     pRightTail->next = NULL;
                 }
-            } while(pHead != pTail);
-            cout << "left ";
-            printList(pLeft, pLeftTail);
-            cout << pDivision->val << endl;
-            cout << "right ";
-            printList(pRight, pRightTail);
+                sleep(1);
+            } while(pHead != pTail && pHead!=NULL);
+
             if(NULL != pLeftTail)
             {
                 pLeftTail->next = pDivision;
             }
             pDivision->next = pRight;
-            if(NULL != pLeft)
+            if(NULL != pLeft && pLeft!=pLeftTail)
             {
+                cout << pLeft << pLeftTail->val <<endl;
+                cout << pLeftTail << pLeftTail->val <<endl;
+                printList(pLeft, pLeftTail);
                 s.push(pLeft);
                 s.push(pLeftTail);
                 pRet = pLeft;
             }
-            if(NULL != pRight)
+            if(NULL != pRight && pRight!=pRightTail)
             {
+                cout << pRight << pRight->val <<endl;
+                cout << pRightTail << pRightTail->val <<endl;
+                printList(pRight, pRightTail);
                 s.push(pRight);
                 s.push(pRightTail);
             }
+            printList(pLeft);
         }
 
         return pRet;
