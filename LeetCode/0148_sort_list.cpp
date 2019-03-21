@@ -33,89 +33,6 @@ public:
 
     ListNode* sortListQuickSortUnRecur(ListNode *head)
     {
-        if(NULL == head)
-        {
-            return head;
-        }
-        ListNode *pHead = head;
-        ListNode *pTail = pHead;
-        while(NULL != pTail->next) { pTail = pTail->next; }
-        pTail = pTail->next;
-
-        stack<ListNode *> s;
-        s.push(pHead);
-        s.push(pTail);
-
-        ListNode *pRet = NULL;
-        ListNode *pLeft = NULL;
-        ListNode *pLeftTail = NULL;
-        ListNode *pRight = NULL;
-        ListNode *pRightTail = NULL;
-        while(!s.empty())
-        {
-            pLeft = pLeftTail = pRight = pRightTail = NULL;
-            pTail = s.top(); s.pop();
-            pHead = s.top(); s.pop();
-            ListNode *pDivision = pHead;
-            pHead = pHead->next; 
-            do
-            {
-                if(pHead->val < pDivision->val)
-                {
-                    if(pLeft == NULL)
-                    {
-                        pLeft = pLeftTail = pHead;
-                    }
-                    else
-                    {
-                        pLeftTail->next = pHead;
-                        pLeftTail = pHead;
-                    }
-                    pHead = pHead->next;
-                    pLeftTail->next = NULL;
-                }
-                else
-                {
-                    if(pRight == NULL)
-                    {
-                        pRight = pRightTail = pHead;
-                    }
-                    else
-                    {
-                        pRightTail->next = pHead;
-                        pRightTail = pHead;
-                    }
-                    pHead = pHead->next;
-                    pRightTail->next = NULL;
-                }
-                sleep(1);
-            } while(pHead != pTail && pHead!=NULL);
-
-            if(NULL != pLeftTail)
-            {
-                pLeftTail->next = pDivision;
-            }
-            pDivision->next = pRight;
-            if(NULL != pLeft && pLeft!=pLeftTail)
-            {
-                cout << pLeft << pLeftTail->val <<endl;
-                cout << pLeftTail << pLeftTail->val <<endl;
-                printList(pLeft, pLeftTail);
-                s.push(pLeft);
-                s.push(pLeftTail);
-                pRet = pLeft;
-            }
-            if(NULL != pRight && pRight!=pRightTail)
-            {
-                cout << pRight << pRight->val <<endl;
-                cout << pRightTail << pRightTail->val <<endl;
-                printList(pRight, pRightTail);
-                s.push(pRight);
-                s.push(pRightTail);
-            }
-            printList(pLeft);
-        }
-
         return pRet;
     }
 
@@ -211,15 +128,15 @@ int main()
 {
     ListNode *pHead = NULL;
     ListNode *pTail = NULL;
-    ListNode *pTmp = new ListNode(1);
+    ListNode *pTmp = new ListNode(5);
     pHead = pTail = pTmp;
+    pTmp = new ListNode(3);
+    pTail = pTail->next = pTmp;
+    pTmp = new ListNode(8);
+    pTail = pTail->next = pTmp;
     pTmp = new ListNode(2);
     pTail = pTail->next = pTmp;
-    pTmp = new ListNode(1);
-    pTail = pTail->next = pTmp;
-    pTmp = new ListNode(2);
-    pTail = pTail->next = pTmp;
-    pTmp = new ListNode(1);
+    pTmp = new ListNode(9);
     pTail = pTail->next = pTmp;
 
     printList(pHead);
